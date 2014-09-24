@@ -132,6 +132,19 @@ switch ($action) {
 		}
 		else {
 			$results = $pagination = '';
+			if (!empty($scriptProperties['tplWrapper']) && !empty($scriptProperties['wrapIfEmpty'])) {
+				$query = trim(@$_REQUEST[$scriptProperties['queryVar']]);
+
+				$results = $pdoFetch->getChunk(
+					$scriptProperties['tplWrapper'],
+					array(
+						'output' => $modx->lexicon('mse2_err_no_results'),
+						'total' => 0,
+						'query' => $query,
+					)
+					,(!empty($paginatorProperties['fastMode']))?$paginatorProperties['fastMode']:false
+				);
+			}
 		}
 
 		$pdoFetch->timings = $log;
